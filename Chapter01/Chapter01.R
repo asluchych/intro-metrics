@@ -2,6 +2,7 @@
 # a) Generate 1500 observations for an independent standard normally distributed 
 # random variable, X ∼ N (0, 1)
 
+set.seed(321)
 X <- rnorm(1500, 0, 1)
 
 # b) Generate the histogram and descriptive statistics of X.
