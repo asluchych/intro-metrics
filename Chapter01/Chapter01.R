@@ -9,6 +9,7 @@ X <- rnorm(1500, 0, 1)
 
 hist(X)
 summary(X)
+sd(X)
 
 # c) Generate the random variable Y , where Y = 5 + 3X, and its histogram and 
 # descriptive statistics.
