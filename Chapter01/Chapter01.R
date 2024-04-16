@@ -18,7 +18,7 @@ Y <- 5 + 3*X
 
 hist(Y)
 summary(Y)
-
+sd(Y)
 
 # d) Calculate the expected value and variance of Y and compare them with the 
 # arithmetic mean and the sample variance from c).
