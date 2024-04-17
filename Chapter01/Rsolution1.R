@@ -62,8 +62,6 @@ plot(grades$satm, grades$fgpa)
 plot(grades$fem, grades$fgpa)
 plot(grades$fem, grades$satm)
 
-# d) Comparison
-
 # e) Conditional mean
 mean(grades$fgpa[grades$fem==1])
 mean(grades$satm[grades$fem==1])
