@@ -1,89 +1,86 @@
 ################################################################################
 #                                                                              #
-#            Übungsblatt 2: Einfache Lineare Regression                        # 
-#                       Aufgabe 3 und 5                                        #
+#            Exercise Sheet 2: Simple Linear Regression Model                  # 
+#                       Assignments 3 and 5                                    #
 #                                                                              #
 ################################################################################
 
-##### Aufgabe 3: Häuserpreise #####
+##### Assignment 3: House Prices #####
 
-# Daten einlesen
-houses <- read.csv("C:/Users/leasi/Desktop/Übung2020/Übung2/houseprices.csv")
+# Load data
+houses <- read.csv('houseprices.csv')
 
-# Vorbetrachtung
+# Exploration
 summary(houses)
-plot(PRICE ~ SQM, data = houses) # positiver Zusammenhang zwischen price & sqm
+plot(PRICE ~ SQM, data = houses)
 cor(houses$PRICE, houses$SQM)
 
-# a) Lineare Regression mit KQ-Methode
+# a) Linear regression with OLS
 linModA <- lm(PRICE ~ SQM, data = houses)
 summary(linModA)
 
-# Regressionsline zum Scatterplot hinzufügen
+# Add regression line to scatterplot
 plot(PRICE ~ SQM, data = houses)
 abline(linModA, col="red")
 
-# c) Preis für Haus mit 200m^2 vorhersagen
+# c) Predict price of a house of size 200 m^2
 price_200 <- predict(linModA, data.frame(SQM = c(200)))
-print(price_200) # Wert in der Console ausgeben
+print(price_200) # Output value in the console
 
-# d) Skalierung
-houses$priceScaled <- houses$PRICE/1000 # Preis in 1000 $ 
-# Lineare Regression mit skaliertem Preis
+# d) Scaling
+houses$priceScaled <- houses$PRICE/1000 # price in 1000$ 
+# Linear regression with rescaled price
 linModC <- lm(priceScaled ~ SQM, data = houses)
 summary(linModC)
-# Vorhersage
+# Prediction
 priceScaled_200 <- predict(linModC, data.frame(SQM = c(200)))
-# Die Vorhersage ist immer noch in 1000$ für Interpretation in $ * 1000 rechnen:
+# Prediction in dollars
 priceInDollar_200 <- priceScaled_200 * 1000 
 
-##### Aufgabe 5: Schätzunsicherheit #####
+##### Assignment 5: Estimation Uncertainty #####
 
-# Daten einlesen
-random <- read.csv("C:/Users/leasi/Desktop/Übung2020/Übung2/random.csv")
+# Load data
+random <- read.csv('random.csv')
 
-# a) Lineares Modell y1 ~ x
+# a) Linear model y1 ~ x
 regA <- lm(Y1 ~ X, data = random)
 summary(regA)
-# (i) Kovarianz Matrix der Koeffizienten
+# (i) Covariance matrix of estimators
 vcov(regA)
-# (ii) Ohne Konstante/Intercept - In R wird die Konstante standardmäßig in die
-# Regression mit aufgenommen, das verhindert man, indem man -1 in die Gleichung
-# aufnimmt
-regOhneK <- lm(Y1 ~ -1 + X, data = random)
-summary(regOhneK)
+# (ii) Model without intercept
+regNoInt <- lm(Y1 ~ -1 + X, data = random)
+summary(regNoInt)
 
-# b) Lineares Modell y2 ~ x
+# b) Linear model y2 ~ x
 regB <- lm(Y2 ~ X, data = random)
 summary(regB)
 
-# zwei Scatterplotts in einem Plot
+# two scatterplots in one plot
 plot(Y1 ~ X, data = random, col = "blue",  xlab='X', ylab='Y1 and Y2',
-     xlim=c(14,47), ylim=c(25,100), main='Scatterplot') # Plot 1
-par(new = TRUE) # Plotte den nächsten Plot in den davor
+     xlim=c(14,47), ylim=c(25,100), main='Scatterplot') 
+par(new = TRUE) 
 plot(Y2 ~ X, data = random, col = "red", xlab='X', ylab='Y1 and Y2',
-     xlim=c(14,47), ylim=c(25,100)) # Plot 2
-abline(a = 1, b = 2, col = "green") # Gerade mit wahrem Zusammenhang
+     xlim=c(14,47), ylim=c(25,100)) 
+abline(a = 1, b = 2, col = "green") 
 legend("bottomright", legend=c('Y1', 'Y2', 'True Model'),
        col=c('blue', 'red', 'green'), pch = c(1, 1, NA_integer_),
-       lty = c(0, 0, 1)) # Legende hinzufügen
+       lty = c(0, 0, 1)) 
 
 
-# c) Verringere Variation von X
-# (i) durch Skalierung von X
+# c) Reduce variation of X
+# (i) by changing scale of X
 random$xScaled <- random$X/10
-# Modell aus b) neu schätzen
+# Re-estimate model from b)
 regScaledX <- lm(Y2 ~ xScaled, data = random)
 summary(regScaledX)
-# (ii) durch veringerung de Stichprobengröße, nutzt nur die ersten 100 
-# Beobachtungen für die Schätzung
+# (ii) by reducing sample size
 regSmallSample <- lm(Y2 ~ X, data = random[1:100,])
 summary(regSmallSample)
 
-# d) Umkehrregressionen
-# (1) zur Regression in a)
-regUmkehrA <- lm(X ~ Y1, data = random)
-summary(regUmkehrA)
-# (2) zur Regression in b)
-regUmkehrB <- lm(X ~ Y2, data = random)
-summary(regUmkehrB)
+# d) Inverse regression
+# (1) to regression in a)
+regInvA <- lm(X ~ Y1, data = random)
+summary(regInvA)
+# (2) to regression in b)
+regInvB <- lm(X ~ Y2, data = random)
+summary(regInvB)
