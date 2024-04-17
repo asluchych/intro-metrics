@@ -40,7 +40,7 @@ sd(Y[1:100])
 
 ##### Assignment 5: Data #####
 
-# Read data
+# Load data
 grades <- read.csv('grades.csv')
 
 # a) Descriptive statistics
