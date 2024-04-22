@@ -7,7 +7,7 @@
 
 ##### Assignment 3: House Prices #####
 
-# Load data
+# Load data, using read.csv
 houses <- read.csv('houseprices.csv')
 
 # Exploration
