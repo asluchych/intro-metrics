@@ -1,0 +1,103 @@
+\documentclass[11pt]{article}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\usepackage{amsmath}
+%\usepackage[final]{epsfig}
+%\usepackage{harvard}
+
+%\usepackage{Footn}
+%\usepackage{eurosym}
+%\usepackage{german}
+%\usepackage{amsmath}
+%\usepackage{mathpazo}
+\usepackage{lscape}
+
+\usepackage{dsfont}
+\usepackage{setspace}
+
+\usepackage[fleqn]{amsmath}
+\usepackage{amssymb}
+%\usepackage{harvard}
+\usepackage{paralist}
+\usepackage{color}
+\usepackage{mdwlist}
+\usepackage[dcu]{harvard}
+\usepackage[german]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{enumerate}
+%\citationstyle{dcu}
+%\bibliographystyle{dcu}
+
+\newcommand{\can}{\citeasnoun}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}
+\newcommand{\E}{\mbox{E}}
+\newcommand{\bewstart}{\noindent {\bf Proof} \hspace*{\fill} \\ }
+\newcommand{\bewend}{\hfill \rule{0.5em}{1.5ex} \medskip}
+\textheight=24cm \textwidth=14.5cm \oddsidemargin=1cm
+\evensidemargin=1cm \topmargin=-2.2cm
+\parindent0em
+\parskip1.5ex plus0.5ex minus0.2ex
+\pagestyle{empty}
+
+\renewcommand{\footnoterule}{\rule{6cm}{0.2pt}\vspace{3pt}}
+
+
+
+
+\begin{document}
+\renewcommand{\labelenumi}{\alph{enumi})}
+
+\onehalfspacing
+
+\small{Freie Universität Berlin \hfill Introduction to Econometrics \\
+School of Business and Economics \hfill Prof. Dr. Dieter Nautz}
+
+
+\vspace{0.5cm}
+
+
+\hrule
+
+\begin{center}
+
+\Large{\textbf{Exercise 2: \\
+The Simple Linear Regression Model}}
+
+\end{center}
+
+\vspace{0.1cm}
+
+\hrule
+
+
+
+\textbf{Additional Assignment*: Food Expenditure}
+
+Open \texttt{food.wf1/.csv}. The file contains data on income and food expenditure from a random sample of 40 households. The data include the following variables:
+\vspace{0.2cm}
+
+\begin{tabular}{|p{0.3cm} p{2cm} c p{10.5cm}|}
+  \hline
+  \multicolumn{4}{|l|}{}\\
+  \multicolumn{2}{|l}{Variables:} & &  \\
+  & \texttt{FOOD\_EXP} && food expenditure in \$ \\
+  & \texttt{INCOME} && weekly income in $100\$$ \\
+  \multicolumn{4}{|l|}{}\\
+  \hline
+\end{tabular}
+
+\begin{enumerate}
+% Regression Model: EViews, gretl, R
+\item Estimate the simple linear regression model ($y_i=\beta_1 + \beta_2x_i + e_i$) with the dependent variable \texttt{FOOD\_EXP} and the independent variable \texttt{INCOME}. Suppose that all  standard assumptions hold.
+\item Represent the regression line in the form of an equation and interpret the coefficients $b_1$ and $b_2$. 
+\item Predict expenditre on food of a household with weekly income of $1500\$$ using the regression model.
+% price/1000
+\item Rescale \texttt{INCOME} so that the weekly income is given in \$. Repeat tasks  \textit{a)} to \textit{c)}. Does your prediction change?
+
+\end{enumerate}
+
+
+
+\end{document}
