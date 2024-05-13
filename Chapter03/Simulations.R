@@ -4,7 +4,7 @@
 #                                                                              #
 ################################################################################
 
-# Set significance level for test decision, Sample Size and Number of Draws
+# Set significance level for test decision, sample size and Number of Draws
 alpha <- 0.05
 nSim <- 10000
 sampleSize <- 500
@@ -107,3 +107,4 @@ for (i in 1:nSim) {
            col = "steelblue")  
 }
 abline(v = 0)
+
