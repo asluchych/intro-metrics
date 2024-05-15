@@ -1,38 +1,38 @@
 ################################################################################
 #                                                                              #
-#      ‹bungsblatt 4: Vorhersagen, Bestimmtheitsmaﬂ und Modellierung           # 
-#                           Aufgabe 3                                          #
+#      Exercise Sheet 4: Prediction, Goodness-of-Fit and Modeling Issues      # 
+#                           Assignment 3                                       #
 #                                                                              #
 ################################################################################
-# package: if its not installed, type install.packages("tseries") in the console
-library(tseries) # for the jarque-bera-test function
+# package: if it's not installed, type install.packages("tseries") in the console
+library(tseries) # for the Jarque-Bera-test function
 
 
-##### Aufgabe 3: H‰userpreise #####
+##### Assignment 3: House Prices #####
 
-# Daten einlesen
-houses <- read.csv("C:/Users/leasi/Desktop/‹bung2020/‹bung2/houseprices.csv")
+# load data
+houses <- read.csv('houseprices.csv')
 
-# a) Interpretation b_2 und R^2
-# Regressionen
-# Modell (1)
+# a) interpretation b_2 and R^2
+# model (1)
 lin <- lm(PRICE ~ SQM, data = houses)
 summary(lin)
 
-# Modell (2)
+# model (2)
 logLin <- lm(log(PRICE) ~ SQM, data = houses)
 summary(logLin)
+coef(summary(logLin))
 
-# Modell (3)
+# model (3)
 logLog <- lm(log(PRICE) ~ log(SQM), data = houses)
 summary(logLog)
 
-# b) Vergleich
+# b) comparison
 xVals <- seq(20, 800, 0.1)
 fittedValsLogLin <- exp(logLin$coefficients[1] + logLin$coefficients[2]*xVals)
 fittedValsLogLog <- exp(logLog$coefficients[1] + logLog$coefficients[2]*log(xVals))
 
-# (i) Graph der Regression - Scatterplot PRICE, SQM
+# (i) regression lines - scatter plot PRICE, SQM
 plot(PRICE ~ SQM, data = houses, main = "Prices vs. Square Meters")
 abline(lin, col = "green")
 lines(fittedValsLogLin ~ xVals, col = "red")
@@ -40,25 +40,25 @@ lines(fittedValsLogLog ~ xVals, col = "blue")
 legend("topleft", legend = c("Linear", "Log-Linear", "Log-Log"),
        col = c("green", "red", "blue"), lwd = 1)
 
-# (ii) Residuen Graph
-# Linear Model
+# (ii) residuals
+# linear model
 plot(lin$residuals ~ houses$SQM, main = "Residuals Linear Model")
 abline(h=0)
 
-# Log-Linear Model
+# log-linear model
 plot(logLin$residuals ~ houses$SQM, main = "Residuals Log-Linear Model")
 abline(h=0)
 
-# Log-Log Model
+# log-log Model
 plot(logLog$residuals ~ houses$SQM, main = "Residuals Log-Log Model")
 abline(h=0)
 
-# (iv) Jarque Bera Test: H_0 the residuals are normally distributed
-# Linear Model
+# (iv) Jarque Bera Test: H_0 residuals are normally distributed
+# linear model
 jarque.bera.test(lin$residuals)
 
-# Log-Linear Model
+# log-linear model
 jarque.bera.test(logLin$residuals)
 
-# Log-Log Model
+# log-log model
 jarque.bera.test(logLog$residuals)

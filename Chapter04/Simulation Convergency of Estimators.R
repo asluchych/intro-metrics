@@ -1,11 +1,11 @@
 library(tseries)
 
-# Quick Illustration of the Simulation
+# Quick illustration of the simulation
 
-# Values for the Exogenous Variable
+# values for exogenous variable
 xVals <- seq(0, 10, 0.1)
 
-# Deterministic part of the Model with an intercept 1 and a slope of 2
+# deterministic part of the model with an intercept 1 and a slope of 2
 det <- 1 + 2*xVals
 
 # Simulate the stochastic error terms from a uniform distribution
@@ -20,7 +20,7 @@ grid()
 
 hist(noise)
 
-# Create Observations of the endogenous variable as sum of deterministic and 
+# Create observations of the endogenous variable as sum of deterministic and 
 # stochastic parts
 yVals <- det + noise
 
