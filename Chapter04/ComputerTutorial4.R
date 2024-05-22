@@ -62,3 +62,46 @@ jarque.bera.test(logLin$residuals)
 
 # log-log model
 jarque.bera.test(logLog$residuals)
+
+
+# Extra: LS estimates
+x <- houses$SQM
+y <- houses$PRICE
+
+# Point estimates
+b2 <- cov(x, y)/var(x)
+b1 <- mean(y) - b2*mean(x)
+
+# Point predictions
+n <- nrow(houses)
+y.hat <- rep(NA, n)
+for (i in seq(n)) {
+  y.hat[i] <- b1 + b2*x[i]
+}
+
+# Standard error of regression
+sse <- sum((y - y.hat)^2)
+var.reg <- sse/(n - 2)
+se.reg <- sqrt(var.reg)
+
+
+# Standard error of estimates
+se.b2 <- sqrt(var.reg/sum((x - mean(x))^2))
+se.b1 <- sqrt(var.reg * sum(x^2)/(n*sum((x - mean(x))^2)))
+cov.b1.b2 <- var.reg*(-mean(x))/sum((x - mean(x))^2)
+
+vcov(lin)
+
+# R^2
+sse <- sum((y - y.hat)^2)
+sst <- sum((y - mean(y))^2)
+r2 <- 1 - sse/sst
+
+
+# Extra: standard normal vs t-distribution
+x <- seq(-3, 3, length.out = 100)
+plot(x, dnorm(x), col = 'blue', type = 'l')
+points(x, dt(x, 1),  col = 'red', type = 'l')
+points(x, dt(x, 5),  col = 'yellow', type = 'l')
+points(x, dt(x, 20),  col = 'black', type = 'l')
+points(x, dt(x, 50),  col = 'green', type = 'l')
