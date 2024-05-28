@@ -1,50 +1,56 @@
 ################################################################################
 #                                                                              #
-#                   Übungsblatt 7: Indikatorvariable                           # 
-#                                  Aufgabe 2                                   #
+#                   Exercise Sheet 7: Using Indicator Variables                # 
+#                                  Assignment 2                                #
 #                                                                              #
 ################################################################################
 
-##### Aufgabe 2: Managergehälter #####
+##### Assignment 2: Manager Salary #####
 
-# Daten einlesen
-sal <- read.csv("C:/Users/leasi/Desktop/Übung2020/Übung7/sal.csv")
+# Load data
+sal <- read.csv('sal.csv')
 
-# a) Modell 1
+# a) 
+summary(sal)
+cor(sal)
+boxplot(SALARY ~ EDUC, data = sal)
+boxplot(SALARY ~ GENDER, data = sal)
+boxplot(SALARY ~ MANAGER, data = sal)
 
+# b) model 1
 regA <- lm(log(SALARY) ~ EDUC + GENDER, data = sal)
 summary(regA)
 
-# b) F-Test in summary(regA)
+# c) F-Test in summary(regA)
 
-# c) H_0: beta_3 = 2*beta_2
-# definiere Hilfsvariable für restringiertes Modell x = EDUC+2*GENDER
+# d) H_0: beta_3 = 2*beta_2
+# define auxiliary variable for restricted  model: x = EDUC+2*GENDER
 sal$x <- sal$EDUC + 2*sal$GENDER
 regRestricted <- lm(log(SALARY) ~ x, data = sal)
 summary(regRestricted)
-# Berechne SSE_R und SSE_U
+# Calculate SSE_R und SSE_U
 sseR <- sum((regRestricted$residuals - mean(regRestricted$residuals))^2)
 sseU <- sum((regA$residuals - mean(regA$residuals))^2)
-# F-Statistik und p-Wert
+# F-statstic and p-vale
 fStat <- ((sseR - sseU)*regA$df.residual)/(sseU*1)
 pVal <- pf(fStat, 1, regA$df.residual, lower.tail = FALSE)
 
-# d) Modell d
+# e) model e
 
-regD <- lm(log(SALARY) ~ EDUC + GENDER + MANAGER, data = sal)
-summary(regD)
-
-# e) Modell e
-regE <- lm(log(SALARY) ~ EDUC + GENDER + MANAGER + MANAGER*GENDER, data = sal)
+regE <- lm(log(SALARY) ~ EDUC + GENDER + MANAGER, data = sal)
 summary(regE)
 
-# f) R^2 und adjusted R^2 aus der summary
-# Akaike Information Criteria
-AIC(regD)
-AIC(regE)
-# Scharz Criterion
-BIC(regD)
-BIC(regE)
+# f) model f
+regF <- lm(log(SALARY) ~ EDUC + GENDER + MANAGER + MANAGER*GENDER, data = sal)
+summary(regF)
 
-# g) Anzahl der weiblicher Manager
+# g) R^2 und adjusted R^2 from summary
+# Akaike Information Criterion
+AIC(regE)
+AIC(regF)
+# Schwarz Criterion
+BIC(regE)
+BIC(regF)
+
+# h) number of female managers
 length(sal$GENDER[sal$GENDER == 0 & sal$MANAGER == 1])
