@@ -1,61 +1,58 @@
 ################################################################################
 #                                                                              #
-#      Übungsblatt 6: Multiples Regressionsmodell II                           # 
-#                           Aufgabe 4 + 5                                      #
+#               Exercise Sheet 6: Multiple Regression Model 2                  # 
+#                        Assignments 4 and 5                                   #
 #                                                                              #
 ################################################################################
+
+# package lmtest: if it's not installed, type install.packages('lmtest') in the console 
 library(lmtest)
 
-##### Aufgabe 4: Modellspezifikation #####
+##### Assignments 4: Model Specification #####
 
-# Daten einlesen
-wages <- read.csv("C:/Users/leasi/Desktop/Übung2020/Übung6/wages.csv")
+# Load data
+wages <- read.csv('wages.csv')
 
-# a) Modell A
-
+# a) model A
 regWageA <- lm(WAGE ~ EDUC + AGE, data = wages)
 summary(regWageA)
 
 # b) RESET
 resettest(regWageA, power = 2:3)
 
-# c) Modell C
-
+# c) model C
 regWageC <- lm(WAGE ~ EDUC + I(EDUC^2) + AGE + I(AGE^2), data = wages)
 summary(regWageC)
 
 # d) RESET
 resettest(regWageC, power = 2:3)
 
-# e) Modell E
-
+# e) model E
 regWageE <- lm(WAGE ~ EDUC + I(EDUC^2) + AGE + I(AGE^2) + CITY, data = wages )
 summary(regWageE)
 
-##### Aufgabe 5: Kollinearität #####
+##### Assignment 5: Collinearity #####
 
-# Daten einlesen
-prod <- read.csv("C:/Users/leasi/Desktop/Übung2020/Übung6/production.csv")
+# Load data
+prod <- read.csv('production.csv')
 
-# a) Modell
-
-regProdA <- lm(log(Q) ~ log(K) + log(L), data = prod)
+# a) model
+regProdA <- lm(log(Q) ~  log(L) + log(K), data = prod)
 summary(regProdA)
 
-# b) Correlation
-
+# b) correlation
 cor(prod)
 
-# c) Restingiertes Modell
-# Definiere neue Variablen für das Restringierte Modell
+# c) restricted model
+# define new variables for the restricted model
 prod$y <- log(prod$Q) - log(prod$K)
 prod$x <- log(prod$L) - log(prod$K)
-# Berechne das Modell
+# fit the model
 regProdC <- lm(y ~ x, data = prod)
 summary(regProdC)
-# Berechne SSE_R und SSE_U
+# calculate SSE_R and SSE_U
 sseR <- sum((regProdC$residuals - mean(regProdC$residuals))^2)
 sseU <- sum((regProdA$residuals - mean(regProdA$residuals))^2)
-# F-Statistik und p-Wert
+# F-statistic and p-value
 fStat <- ((sseR - sseU)*regProdA$df.residual)/(sseU*1)
 pVal <- pf(fStat, 1, 30, lower.tail = FALSE)
