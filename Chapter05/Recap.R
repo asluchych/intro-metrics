@@ -52,7 +52,7 @@ linModG <- lm(WAGE ~ EDUC + I(EDUC^2) + AGE + I(AGE^2), data = wages)
 summary(linModG)
 # get coefficients
 coG <- coef(summary(linModG))
-# marginal effects sqft
+# marginal effects education
 effectEducMin <- coG[2,1] + 2*coG[3,1]*min(wages$EDUC)
 effectEducMed <- coG[2,1] + 2*coG[3,1]*median(wages$EDUC)
 effectEducMax <- coG[2,1] + 2*coG[3,1]*max(wages$EDUC)
