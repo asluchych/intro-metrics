@@ -47,7 +47,7 @@ tstatA <- (co[2,1] - 2)/co[2,2]
 # calculate the p-value, left-sided
 pValA <- 1 - pt(tstatA, df = linModA$df.residual)
 
-# g) model 2: include squared terms
+# h) model 2: include squared terms
 linModG <- lm(WAGE ~ EDUC + I(EDUC^2) + AGE + I(AGE^2), data = wages)
 summary(linModG)
 # get coefficients
