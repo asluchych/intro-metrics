@@ -18,14 +18,14 @@ regWageA <- lm(WAGE ~ EDUC + AGE, data = wages)
 summary(regWageA)
 
 # b) RESET
-resettest(regWageA, power = 2:3)
+resettest(regWageA, power = 2)
 
 # c) model C
 regWageC <- lm(WAGE ~ EDUC + I(EDUC^2) + AGE + I(AGE^2), data = wages)
 summary(regWageC)
 
 # d) RESET
-resettest(regWageC, power = 2:3)
+resettest(regWageC, power = 2)
 
 # e) model E
 regWageE <- lm(WAGE ~ EDUC + I(EDUC^2) + AGE + I(AGE^2) + CITY, data = wages )
