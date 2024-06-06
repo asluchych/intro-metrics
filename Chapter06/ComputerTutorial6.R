@@ -56,3 +56,8 @@ sseU <- sum((regProdA$residuals - mean(regProdA$residuals))^2)
 # F-statistic and p-value
 fStat <- ((sseR - sseU)/1)/(sseU/regProdA$df.residual)
 pVal <- 1 - pf(fStat, 1, 30)
+
+# alternatively
+# package car: if it's not installed, type install.packages('car') in the console 
+library(car)
+linearHypothesis(regProdA, "log(L) + log(K) = 1")
