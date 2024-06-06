@@ -41,7 +41,7 @@ regProdA <- lm(log(Q) ~  log(L) + log(K), data = prod)
 summary(regProdA)
 
 # b) correlation
-cor(prod)
+cor(log(prod))
 
 # c) restricted model
 # define new variables for the restricted model
@@ -54,5 +54,5 @@ summary(regProdC)
 sseR <- sum((regProdC$residuals - mean(regProdC$residuals))^2)
 sseU <- sum((regProdA$residuals - mean(regProdA$residuals))^2)
 # F-statistic and p-value
-fStat <- ((sseR - sseU)*regProdA$df.residual)/(sseU*1)
-pVal <- pf(fStat, 1, 30, lower.tail = FALSE)
+fStat <- ((sseR - sseU)/1)/(sseU/regProdA$df.residual)
+pVal <- 1 - pf(fStat, 1, 30)
