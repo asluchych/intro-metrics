@@ -33,10 +33,13 @@ sseR <- sum((regRestricted$residuals - mean(regRestricted$residuals))^2)
 sseU <- sum((regA$residuals - mean(regA$residuals))^2)
 # F-statstic and p-vale
 fStat <- ((sseR - sseU)*regA$df.residual)/(sseU*1)
-pVal <- pf(fStat, 1, regA$df.residual, lower.tail = FALSE)
+pVal <- 1 - pf(fStat, 1, regA$df.residual)
+# alternatively
+# package car: if it's not installed, type install.packages('car') in the console 
+library(car)
+linearHypothesis(regA, "GENDER = 2*EDUC")
 
 # e) model e
-
 regE <- lm(log(SALARY) ~ EDUC + GENDER + MANAGER, data = sal)
 summary(regE)
 
