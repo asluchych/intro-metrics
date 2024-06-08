@@ -57,4 +57,3 @@ BIC(regF)
 
 # h) number of female managers
 length(sal$GENDER[sal$GENDER == 0 & sal$MANAGER == 1])
-# comment
