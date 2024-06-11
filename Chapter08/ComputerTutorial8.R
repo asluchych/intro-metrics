@@ -1,29 +1,43 @@
 ################################################################################
 #                                                                              #
-#                   Übungsblatt 8: Heteroskedastie                             # 
-#                                  Aufgabe 2                                   #
+#                   Exercise Sheet 8: Heteroskedasticity                       # 
+#                                  Assignment 2                                #
 #                                                                              #
 ################################################################################
-# benötigte Pakete: wenn sie noch nicht installiert sind: install.package("???")
-# in die Console
-library(lmtest) #für Funktion: bptest, vcovHC
-library(sandwich) #für Funktion: coeftest
-##### Aufgabe 2: Reisen #####
+# necessary packages: if not installed, type install.packages(c('lmtest', 'sandwich') 
+# in the console and press Enter
 
-# Daten einlesen
-travel <- read.csv("C:/Users/leasi/Desktop/Übung2020/Übung8/travel.csv")
+library(lmtest) # for function: bptest, vcovHC
+library(sandwich) # for function: coeftest
 
-# a) Modell 1
+##### Assignment 2: Travel #####
+
+# Load data 
+travel <- read.csv('travel.csv')
+
+# a) model 1
 regA <- lm(MILES ~ INCOME + AGE + KIDS, data = travel)
 summary(regA)
 
-# b) Test - Je nachdem wie die Diskussion in a) ausgeht, gibt es verschiedene 
-# Möglichkeiten zu Testen, hier Breusch-Pagan Test mit INCOME und AGE als 
-# erklärende Variablen
+# b) scatterplots
+# residuals graph
+# age
+plot(regA$residuals ~ travel$AGE, main = 'Age')
+abline(h=0)
 
-# speichere die Residuen zum Quadrat als abhängige Variable der Hilfsregression
+# Kids
+plot(regA$residuals ~ travel$KIDS, main = 'Kids')
+abline(h=0)
+
+# Income
+plot(regA$residuals ~ travel$INCOME, main = 'Income')
+abline(h=0)
+
+# c) Breusch-Pagan Test with INCOME as  explanatory variable
+
+# speichere die Residuen zum Quadrat als abh?ngige Variable der Hilfsregression
 resid2 <- regA$residuals^2
-# Führe die Hilfsregression durch
+# F?hre die Hilfsregression durch
 aux <- lm(resid2 ~ travel$INCOME + travel$AGE)
 # speichere die Summary von der Hilfsregression
 sumAux <- summary(aux)
@@ -32,33 +46,22 @@ bp <- 200*sumAux$r.squared
 # Berechne den p-Wert -> eine LM Test Statistik ist X^2 verteilt
 pVal <- pchisq(bp, 2, lower.tail = FALSE)
 
-# Es gibt auch ein package für den Breusch-Pagan Test
+# Es gibt auch ein package f?r den Breusch-Pagan Test
 bptest(regA, varformula = ~ INCOME + AGE, data = travel)
 
 # c) Scatter Plots
-# (ii) Residuen Graph
-# Alter
-plot(regA$residuals ~ travel$AGE, main = "Alter")
-abline(h=0)
 
-# Kinder
-plot(regA$residuals ~ travel$KIDS, main = "Kinder")
-abline(h=0)
 
-# Einkommen
-plot(regA$residuals ~ travel$INCOME, main = "Einkommen")
-abline(h=0)
-
-# d) Mögliche Lösungen des Problems:
+# d) M?gliche L?sungen des Problems:
 # OLS mit White Standardfehlern
 # Summary mit White Standardfehlern
 coeftest(regA, vcov = vcovHC(regA, type = "HC0"))
 
-# GLS: Annahme über Varianz sigma_i^2 = sigma^2*income_i^2
-# Konstante zu travel hinzufügen
+# GLS: Annahme ?ber Varianz sigma_i^2 = sigma^2*income_i^2
+# Konstante zu travel hinzuf?gen
 travel$C <- rep(1, 200)
 # Transformiere Variablen: Alle Variablen im Datensatz travel durch INCOME teilen
 trans <- travel/travel$INCOME
-# Schätze das Modell
+# Sch?tze das Modell
 gls <- lm(MILES ~ C + AGE + KIDS, trans)
 summary(gls)
