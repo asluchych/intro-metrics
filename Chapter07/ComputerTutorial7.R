@@ -51,9 +51,18 @@ summary(regF)
 # Akaike Information Criterion
 AIC(regE)
 AIC(regF)
+
+# additionally: as in lecture slides
+log(sum(regE$residuals^2)/nrow(sal)) + 2*length(coef(regE))/nrow(sal)
+log(sum(regF$residuals^2)/nrow(sal)) + 2*length(coef(regF))/nrow(sal)
+
 # Schwarz Criterion
 BIC(regE)
 BIC(regF)
+# additionally: as in lecture slides
+log(sum(regE$residuals^2)/nrow(sal)) + length(coef(regE))*log(nrow(sal))/nrow(sal)
+log(sum(regF$residuals^2)/nrow(sal)) + length(coef(regF))*log(nrow(sal))/nrow(sal)
+
 
 # h) number of female managers
 length(sal$GENDER[sal$GENDER == 0 & sal$MANAGER == 1])
