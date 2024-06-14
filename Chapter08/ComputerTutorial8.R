@@ -20,48 +20,41 @@ regA <- lm(MILES ~ INCOME + AGE + KIDS, data = travel)
 summary(regA)
 
 # b) scatterplots
-# residuals graph
+# residual graphs
 # age
 plot(regA$residuals ~ travel$AGE, main = 'Age')
 abline(h=0)
-
-# Kids
+# kids
 plot(regA$residuals ~ travel$KIDS, main = 'Kids')
 abline(h=0)
-
-# Income
+# income
 plot(regA$residuals ~ travel$INCOME, main = 'Income')
 abline(h=0)
 
-# c) Breusch-Pagan Test with INCOME as  explanatory variable
-
-# speichere die Residuen zum Quadrat als abh?ngige Variable der Hilfsregression
+# c) Breusch-Pagan Test with INCOME as explanatory variable
+# save squared residuals to be used as dependent variable in auxiliary regression
 resid2 <- regA$residuals^2
-# F?hre die Hilfsregression durch
-aux <- lm(resid2 ~ travel$INCOME + travel$AGE)
-# speichere die Summary von der Hilfsregression
+# fit auxiliary regression
+aux <- lm(resid2 ~ travel$INCOME)
+# save summary of the auxiliary regression
 sumAux <- summary(aux)
-# Berechne die Test Statistik - LM Test -> N*R^2
-bp <- 200*sumAux$r.squared
-# Berechne den p-Wert -> eine LM Test Statistik ist X^2 verteilt
-pVal <- pchisq(bp, 2, lower.tail = FALSE)
+# calculate test statistic - LM test -> N*R^2
+bp <- nrow(travel)*sumAux$r.squared
+# calculate p-value ->  LM test is chi-squared distributed
+pVal <- pchisq(bp, 1, lower.tail = FALSE)
 
-# Es gibt auch ein package f?r den Breusch-Pagan Test
-bptest(regA, varformula = ~ INCOME + AGE, data = travel)
-
-# c) Scatter Plots
+# alternatively use bptest() function from package lmtest
+bptest(regA, varformula = ~ INCOME, data = travel)
 
 
-# d) M?gliche L?sungen des Problems:
-# OLS mit White Standardfehlern
-# Summary mit White Standardfehlern
-coeftest(regA, vcov = vcovHC(regA, type = "HC0"))
+# d) OLS with correct standard errors
+coeftest(regA, vcov = vcovHC(regA, type = "HC1"))
 
-# GLS: Annahme ?ber Varianz sigma_i^2 = sigma^2*income_i^2
-# Konstante zu travel hinzuf?gen
+# e) GLS: assumption about variance sigma_i^2 = sigma^2*income_i^2
+# add a column of 1's to data set travel
 travel$C <- rep(1, 200)
-# Transformiere Variablen: Alle Variablen im Datensatz travel durch INCOME teilen
+# transformation: divide all variables in the data set travel by INCOME
 trans <- travel/travel$INCOME
-# Sch?tze das Modell
+# estimate the model
 gls <- lm(MILES ~ C + AGE + KIDS, trans)
 summary(gls)
