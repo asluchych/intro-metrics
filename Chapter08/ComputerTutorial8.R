@@ -4,12 +4,12 @@
 #                                  Assignment 2                                #
 #                                                                              #
 ################################################################################
-# necessary packages: if not installed, type install.packages(c('lmtest', 'sandwich') 
+# necessary packages: if not installed, type install.packages(c('lmtest', 'sandwich', 'nlme')) 
 # in the console and press Enter
 
 library(lmtest) # for function: bptest, vcovHC
 library(sandwich) # for function: coeftest
-
+library(nlme) # for function: gls
 ##### Assignment 2: Travel #####
 
 # Load data 
@@ -58,3 +58,7 @@ trans <- travel/travel$INCOME
 # estimate the model
 gls <- lm(MILES ~ C + AGE + KIDS, trans)
 summary(gls)
+# alternatively, use gls() function from package nlme
+gls_alt <- gls(MILES ~ INCOME + AGE + KIDS, data = travel,
+                 weights = varFixed(~ INCOME^2))
+summary(gls_alt)
