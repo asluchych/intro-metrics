@@ -41,8 +41,7 @@ sumAux <- summary(aux)
 bp <- nrow(travel)*sumAux$r.squared
 # calculate p-value ->  LM test is chi-squared distributed
 pVal <- pchisq(bp, 1, lower.tail = FALSE)
-
-# alternatively use bptest() function from package lmtest
+# alternatively, use bptest() function from package lmtest
 bptest(regA, varformula = ~ INCOME, data = travel)
 
 # d) OLS with correct standard errors
@@ -56,7 +55,6 @@ trans <- travel/travel$INCOME
 # estimate the model
 gls <- lm(MILES ~ C + AGE + KIDS, trans)
 summary(gls)
-
 # alternatively, use gls() function from package nlme
 gls_alt <- gls(MILES ~ INCOME + AGE + KIDS, data = travel,
                  weights = varFixed(~ INCOME^2))
