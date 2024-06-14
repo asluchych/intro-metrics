@@ -1,46 +1,44 @@
 ################################################################################
 #                                                                              #
-#                   Übungsblatt 10: Stochastische Regressoren                  # 
-#                                  Instrumentenvariablen                       #
-#                                  Aufgabe 4                                   #
+#     Exercise Sheet 10: Random Regressors and Moment-Based Estimation         # 
+#                                       Assignment 4                           #             
 #                                                                              #
 ################################################################################
-# benötigte Pakete: wenn sie noch nicht installiert sind: install.package("???")
-# in die Console
-library(lmtest) #für Funktion: bptest, vcovHC
-library(sandwich) #für Funktion: coeftest
-library(car) # Funktion: lht (Linearer Hypothesen Test)
-library(AER) # Funktion: ivreg (Two Staged Least Squares)
+# necessary packages: if not installed, type install.packages(c('lmtest', 'sandwich', 'nlme', 'car', 'AER')) 
+# in the console and press Enter
+library(lmtest) #for functions: bptest, vcovHC
+library(sandwich) #for function: coeftest
+library(car) # for function: lht (Test Linear Hypothesis)
+library(AER) # for function: ivreg (Two Staged Least Squares)
 
-##### Aufgabe 4 #####
+##### Assignment 4: Inflation #####
 
-# Daten einlesen
-inf <- read.csv("C:/Users/leasi/Desktop/Übung2020/Übung10/inf.csv")
+# Load data
+inf <- read.csv('inf.csv')
 
-# a) Modell 1
+# a) model 1
 regA <- lm(INFLAT ~ MONEY + OUTPUT, data = inf)
 summary(regA)
-
-# Heteroskedastizität
-coeftest(regA, vcov = vcovHC(regA, type = "HC0"))
-
-# Hypothesis (i)
+# hypothesis (i)
+lht(regA, c("(Intercept) = 0", "MONEY = 1", "OUTPUT = -1"))
+# hypothesis (ii)
+lht(regA, c("MONEY = 1", "OUTPUT = -1"))
+# heteroskedasticity
+coeftest(regA, vcov = vcovHC(regA, type = "HC1"))
+# hypothesis (i)
 lht(regA, c("(Intercept) = 0", "MONEY = 1", "OUTPUT = -1"), 
-    vcov = vcovHC(regA, type = "HC0"))
-
-# Hypothesis (ii)
+    vcov = vcovHC(regA, type = "HC1"))
+# hypothesis (ii)
 lht(regA, c("MONEY = 1", "OUTPUT = -1"), 
-    vcov = vcovHC(regA, type = "HC0"))
+    vcov = vcovHC(regA, type = "HC1"))
 
-# Two Staged Least Squares
-regB <- ivreg(INFLAT ~ MONEY + OUTPUT | MONEY + INITIAL + POPRATE + SCHOOL + INV, 
+# b) Two Staged Least Squares
+regB <- ivreg(INFLAT ~ MONEY + OUTPUT | MONEY + INITIAL + SCHOOL + INV + POPRATE, 
               data = inf)
-summary(regB, vcov. = sandwich) # mit vcov.=sandwich berücksichtigt man heterosk.
-
-# Hypothesis (i)
+summary(regB, vcov. = sandwich) # wih vcov.=sandwich potential heteroscedasticity taken into accout
+# hypothesis (i)
 lht(regB, c("(Intercept) = 0", "MONEY = 1", "OUTPUT = -1"), 
-    vcov = vcovHC(regB, type = "HC0"))
-
-# Hypothesis (ii)
+    vcov = vcovHC(regB, type = "HC1"))
+# hypothesis (ii)
 lht(regB, c("MONEY = 1", "OUTPUT = -1"), 
-    vcov = vcovHC(regB, type = "HC0"))
+    vcov = vcovHC(regB, type = "HC1"))

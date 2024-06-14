@@ -6,10 +6,10 @@
 ################################################################################
 # necessary packages: if not installed, type install.packages(c('lmtest', 'sandwich', 'nlme')) 
 # in the console and press Enter
-
 library(lmtest) # for function: bptest, vcovHC
 library(sandwich) # for function: coeftest
 library(nlme) # for function: gls
+
 ##### Assignment 2: Travel #####
 
 # Load data 
