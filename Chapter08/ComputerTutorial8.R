@@ -19,7 +19,7 @@ travel <- read.csv('travel.csv')
 regA <- lm(MILES ~ INCOME + AGE + KIDS, data = travel)
 summary(regA)
 
-# b) residual graphs
+# b) residual plots
 # age
 plot(regA$residuals ~ travel$AGE, main = 'Age')
 abline(h=0)
@@ -40,7 +40,7 @@ sumAux <- summary(aux)
 # calculate test statistic - LM test -> N*R^2
 bp <- nrow(travel)*sumAux$r.squared
 # calculate p-value ->  LM test is chi-squared distributed
-pVal <- pchisq(bp, 1, lower.tail = FALSE)
+pVal <- 1 - pchisq(bp, 1)
 # alternatively, use bptest() function from package lmtest
 bptest(regA, varformula = ~ INCOME, data = travel)
 
@@ -51,9 +51,9 @@ coeftest(regA, vcov = vcovHC(regA, type = "HC1"))
 # add a column of 1's to data set travel
 travel$C <- rep(1, 200)
 # transformation: divide all variables in the data set travel by INCOME
-trans <- travel/travel$INCOME
+transformed <- travel/travel$INCOME
 # estimate the model
-gls <- lm(MILES ~ C + AGE + KIDS, trans)
+gls <- lm(MILES ~ C + AGE + KIDS, data = transformed)
 summary(gls)
 # alternatively, use gls() function from package nlme
 gls_alt <- gls(MILES ~ INCOME + AGE + KIDS, data = travel,
