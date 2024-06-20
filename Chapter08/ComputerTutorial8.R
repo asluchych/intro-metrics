@@ -15,7 +15,7 @@ library(nlme) # for function: gls
 # Load data 
 travel <- read.csv('travel.csv')
 
-# a) model 1
+# a) model a
 regA <- lm(MILES ~ INCOME + AGE + KIDS, data = travel)
 summary(regA)
 
