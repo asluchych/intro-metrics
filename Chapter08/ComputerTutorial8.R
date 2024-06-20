@@ -31,7 +31,7 @@ plot(regA$residuals ~ travel$INCOME, main = 'Income')
 abline(h=0)
 
 # c) Breusch-Pagan Test with INCOME as explanatory variable
-# save squared residuals to be used as dependent variable in auxiliary regression
+# save squared residuals to use as dependent variable in auxiliary regression
 resid2 <- regA$residuals^2
 # fit auxiliary regression
 aux <- lm(resid2 ~ travel$INCOME)
@@ -55,7 +55,7 @@ transformed <- travel/travel$INCOME
 # estimate the model
 gls <- lm(MILES ~ C + AGE + KIDS, data = transformed)
 summary(gls)
-# alternatively, use gls() function from package nlme
+# alternatively, use gls function from package nlme
 gls_alt <- gls(MILES ~ INCOME + AGE + KIDS, data = travel,
                  weights = varFixed(~ INCOME^2))
 summary(gls_alt)
