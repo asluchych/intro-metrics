@@ -35,7 +35,7 @@ lht(regA, c("MONEY = 1", "OUTPUT = -1"),
 # b) Two Staged Least Squares
 regB <- ivreg(INFLAT ~ MONEY + OUTPUT | MONEY + INITIAL + SCHOOL + INV + POPRATE, 
               data = inf)
-summary(regB, vcov. = sandwich) # wih vcov.=sandwich potential heteroscedasticity taken into accout
+summary(regB, vcov. = sandwich) # with vcov.=sandwich potential heteroscedasticity taken into account
 # hypothesis (i)
 lht(regB, c("(Intercept) = 0", "MONEY = 1", "OUTPUT = -1"), 
     vcov = vcovHC(regB, type = "HC1"))
