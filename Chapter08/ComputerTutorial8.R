@@ -45,7 +45,7 @@ pVal <- 1 - pchisq(bp, 1)
 bptest(regA, varformula = ~ INCOME, data = travel)
 
 # d) OLS with correct standard errors
-coeftest(regA, vcov = vcovHC(regA, type = "HC1"))
+coeftest(regA, vcov. = vcovHC(regA, type = "HC1"))
 
 # e) GLS: assumption about variance sigma_i^2 = sigma^2*income_i^2
 # add a column of 1's to data set travel
